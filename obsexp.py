@@ -11,11 +11,14 @@ dest_dir = "/home/ec/win_d/temp/infosec"
 dest_path = shutil.copytree(source_dir, dest_dir)
 
 for dir_name, sub_dir_list, file_list in os.walk(dest_path):
+
+   #if a folder contains the resource folder we can skip that folder and it's subs
    for sub_dir in sub_dir_list:
       sub_dir_res_path = os.path.join(dir_name, os.path.join(sub_dir, res_dir_name))
       if os.path.isdir(sub_dir_res_path):
          sub_dir_list.remove(sub_dir)
    
+   #if we have files in the remaining folders, then we need a resource folder
    if len(file_list) > 0: #if we have files....
       cur_res_path = os.path.join(dir_name, res_dir_name)
 
