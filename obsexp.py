@@ -3,13 +3,18 @@ import pathlib
 import shutil
 import re
 
+#quick code to export a folder from Obsidian with it's resources to create a new vault
+
+#some variables to make it easy to export other folders later
 res_dir_name = "_res"
 source_res_dir = "/home/ec/win_d/sync/vaults/homemain/_res"
 source_dir = "/home/ec/win_d/sync/vaults/homemain/040_tech 💻/infosec"
 dest_dir = "/home/ec/win_d/temp/infosec"
 
+#copy all the files out first
 dest_path = shutil.copytree(source_dir, dest_dir)
 
+#now we can take care of the resources
 for dir_name, sub_dir_list, file_list in os.walk(dest_path):
 
    #if a folder contains the resource folder we can skip that folder and it's subs
