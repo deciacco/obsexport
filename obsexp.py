@@ -34,11 +34,12 @@ for dir_name, sub_dir_list, file_list in os.walk(dest_path):
             with open(md_file, 'r') as md_f:
                md_text = md_f.read()
    
-            #use regex, for each resource, copy it form the old folder
+            #use regex, for each resource, copy it from the old folder
             #use the first group (file name) form the regex search
             for file_resource in re.compile(r"_res\/(.*)\)").finditer(md_text):
                shutil.copy(os.path.join(source_res_dir, file_resource.group(1)), cur_res_path)
 
             #remove the '../' form the links in the MD files, not needed anymore
+            #as the resource folder _res is local
             with open(md_file, 'w+') as md_f:
                md_f.write(md_text.replace("../",""))  
