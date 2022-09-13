@@ -1,15 +1,18 @@
+#!/usr/bin/python3
+
 import os
 import pathlib
 import shutil
 import re
+import urllib.parse
 
 #quick code to export a folder from Obsidian with it's resources to create a new vault
 
 #some variables to make it easy to export other folders later
 res_dir_name = "_res"
-source_res_dir = "/home/ec/win_d/sync/vaults/homemain/_res"
-source_dir = "/home/ec/win_d/sync/vaults/homemain/040_tech 💻/infosec"
-dest_dir = "/home/ec/win_d/temp/infosec"
+source_res_dir = "/mnt/SSD01/sync/vaults/homemain/_res"
+source_dir = "/mnt/SSD01/sync/vaults/homemain/070_home/"
+dest_dir = "/mnt/SSD01/temp/home"
 
 #copy all the files out first
 dest_path = shutil.copytree(source_dir, dest_dir)
@@ -35,6 +38,7 @@ for dir_name, sub_dir_list, file_list in os.walk(dest_path):
       #folder and move it to the new, local folder
       for file_name in file_list:
          cur_file = os.path.join(dir_name, file_name)
+         print(cur_file)
 
          #...if it's an MD file
          if os.path.isfile(cur_file) and pathlib.PurePath(cur_file).suffix == '.md':
@@ -43,8 +47,8 @@ for dir_name, sub_dir_list, file_list in os.walk(dest_path):
    
             #use regex, for each resource, copy it from the old folder
             #use the first group (file name) from the regex search
-            for file_resource in re.compile(r"_res\/(.*)\)").finditer(md_text):
-               shutil.copy(os.path.join(source_res_dir, file_resource.group(1)), cur_res_path)
+            for file_resource in re.compile(r"_res\/(.*?)\)").finditer(md_text):
+               shutil.copy(urllib.parse.unquote(os.path.join(source_res_dir, file_resource.group(1))), cur_res_path)
 
             #remove the '../' form the links in the MD files, not needed anymore
             #as the resource folder _res is local
